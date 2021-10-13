@@ -1,21 +1,9 @@
-FROM node:buster
-
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-ARG JACKETT_RELEASE
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="sparklyballs"
+FROM lscr.io/linuxserver/jackett
 
 # arFROM lsiobase/ubuntu:bionic
 ENV DEBIAN_FRONTEND="noninteractive"
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-ARG JACKETT_RELEASE
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="sparklyballs"
+
 RUN apt update -y && apt install chromium gettext-base dumb-init libxss1 libgbm-dev -y
 RUN apt-get install -y wget gconf-service nginx libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 #nginx
@@ -26,17 +14,9 @@ COPY nginx.conf /etc/nginx/nginx.conf
 #RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 #RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
-	
-# arch settings, uncomment as neccesary
-ARG JACKETT_ARCH="LinuxAMDx64"
-# ARG JACKETT_ARCH="LinuxARM32"
-# ARG JACKETT_ARCH="LinuxARM64"
-
-# environment settings
-ARG DEBIAN_FRONTEND="noninteractive"
-ENV XDG_DATA_HOME="/config" \
-XDG_CONFIG_HOME="/config"
-
+RUN curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN apt install nodejs -y
 RUN \
  echo "**** install packages ****" && \
  apt-get update && \
@@ -48,33 +28,8 @@ RUN \
 	libssl1.0 \
 	libxss1 \
 	libgbm-dev \
-	wget && \
- echo "**** install jackett ****" && \
- mkdir -p \
-	/app/Jackett && \
- if [ -z ${JACKETT_RELEASE+x} ]; then \
-	JACKETT_RELEASE=$(curl -sX GET "https://api.github.com/repos/Jackett/Jackett/releases/latest" \
-	| jq -r .tag_name); \
- fi && \
- curl -o \
- /tmp/jacket.tar.gz -L \
-	"https://github.com/Jackett/Jackett/releases/download/${JACKETT_RELEASE}/Jackett.Binaries.${JACKETT_ARCH}.tar.gz" && \
- tar xf \
- /tmp/jacket.tar.gz -C \
-	/app/Jackett --strip-components=1 && \
- echo "**** fix for host id mapping error ****" && \
- chown -R root:root /app/Jackett && \
- echo "**** cleanup ****" && \
- apt-get clean && \
- rm -rf \
-	/tmp/* \
-	/var/lib/apt/lists/* \
-	/var/tmp/*
+	wget
 	
-	
-
-# add local files
-COPY root/ /
 
 # ports and volumes
 VOLUME /config /downloads
