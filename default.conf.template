@@ -1,5 +1,5 @@
 server {
-  listen $PORT default_server;
+  listen {{port}} default_server;
 
 
   location / {
