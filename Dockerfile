@@ -4,7 +4,7 @@ FROM lscr.io/linuxserver/jackett
 ENV DEBIAN_FRONTEND="noninteractive"
 
 
-RUN apt update -y && apt install chromium gettext-base dumb-init libxss1 libgbm-dev -y
+RUN apt update -y && apt install chromium-browser gettext-base dumb-init libxss1 libgbm-dev -y
 RUN apt-get install -y wget gconf-service nginx libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 #nginx
 COPY default.conf.template /etc/nginx/conf.d/default.conf.template
