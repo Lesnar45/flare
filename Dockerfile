@@ -91,4 +91,4 @@ COPY . .
 RUN npm install
 #RUN node_modules/puppeteer/install.js
 RUN npm run build
-CMD /bin/bash -c "start.sh"
+CMD bash start.sh
