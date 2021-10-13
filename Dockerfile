@@ -42,7 +42,7 @@ EXPOSE 8191
 ENV PUPPETEER_PRODUCT=chrome \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
-RUN find /usr/lib/chromium/locales -type f ! -name 'en-US.*' -delete
+RUN find /usr/lib/chromium-browser/locales -type f ! -name 'en-US.*' -delete
 RUN node -v
 RUN npm -v
 COPY . .
