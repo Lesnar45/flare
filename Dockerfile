@@ -94,5 +94,5 @@ COPY . .
 RUN npm install
 #RUN node_modules/puppeteer/install.js
 RUN npm run build
-CMD bash start.sh
+
 CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon on;' && bash start.sh
