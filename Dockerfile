@@ -5,10 +5,10 @@ ENV DEBIAN_FRONTEND="noninteractive"
 
 ARG PORT
 RUN apt update -y && apt install chromium-browser gettext-base dumb-init libxss1 libgbm-dev -y
-RUN apt-get install -y wget gconf-service nginx libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+RUN apt-get install -y wget gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 #nginx
-COPY default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY nginx.conf /etc/nginx/nginx.conf
+#COPY default.conf.template /etc/nginx/conf.d/default.conf.template
+#COPY nginx.conf /etc/nginx/nginx.conf
 
 # install chrome
 #RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -51,4 +51,4 @@ RUN npm install
 #RUN node_modules/puppeteer/install.js
 RUN npm run build
 
-CMD /bin/bash -c "envsubst '\$PORT' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf" && nginx -g 'daemon on;' && bash start.sh
+RUN bash start.sh
